@@ -4,6 +4,8 @@ Ante la imposibilidad del dictado presencia por el paro y las dificultades tecni
 
 [Ver Video](https://youtu.be/WRCbiL63KVQ)
 
+3815343458
+
 Tambien se subir todo el código fuente de la clase comentada
 
 - 01 Listas   
