@@ -1,6 +1,33 @@
 # TP5: *1er Parcial*
 
-Este trabajo cuenta como el `primer parcial`.
+
+Los siguientes alumnos deben recuperar el parcial.
+```
+ 1️⃣2️⃣3️⃣4️⃣5️⃣
+ 🟢🟢🟢🟢🟡  1. 55936  Arcos, Lucas Isaias                     
+ 🟢🟢🟢🟢🟡  2. 55547  Cabrera, Pablo Daniel                   
+ 🟢🟢🟢🟢🟡  4. 59312  Cancino, Ignacio Matías                 
+ 🟢🟢🔴🟢🟡  6. 59158  Corral, Luciano                         
+ 🟢🟢🔴🟢🟡  9. 59251  Mamani, Daniel Fernando                 
+ 🟢🟢🟢🟢🔴 13. 55939  Mena, Iván Leandro                      
+ 🔴🔴🔴🔴🟡 14. 55606  Meza, Julieta Noemí                     
+ 🟢🔴🔴🔴🔴 16. 58826  Moyano, Luján                           
+ 🟢🟢🟢🟢🟡 18. 59358  Nieva Pastoriza, Gonzalo                
+ 🟢🔴🔴🔴🔴 19. 59162  Nuñez Orqueta, Luis Alberto             
+ 🟢🟢🟢🟢🟡 21. 59490  Parra, Ana Belén                        
+ 🔴🟢🟢🟢🟡 24. 55489  Pérez, Sofía Micaela                    
+ 🔴🔴🔴🔴🟡 28. 59072  Rodríguez, Ana Paula                    
+```
+> 
+> Deben corregir el mismo para que pase todos los test y enviarlos antes del 
+> **Miercoles 9 de Octubre a las 23:59hs**.
+> 
+
+------
+------
+
+
+## Este trabajo cuenta como el `primer parcial`.
 >  
 > Es un `trabajo individual` y puede usar todos los recursos a su disposición, incluyendo el material del curso y búsquedas en internet para resolver dudas. 
 
