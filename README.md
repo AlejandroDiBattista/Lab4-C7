@@ -1,116 +1,32 @@
-# TP5: *1er Parcial*
+# TP6
 
+Los ejercicios de esta semana están orientados a practicar la utilización de la librería `pandas` para el manejo de datos tabulares y `numpy` para el manejo de arreglos multidimensionales.
 
-Los siguientes alumnos deben recuperar el parcial.
+Los ejercicios son los siguientes:
+1. Resolver TP3 con pandas.
+2. Resolver TP1 (ejercicio 2) con numpy.
+    En este caso se piden dos soluciones:
+    1. Implementar la misma solución que en el TP1 pero utilizando numpy para facilitar los cálculos.
+    2. Implementar una solución más genérica (en donde los puntos no pasan exactamente por la parábola) utilizando numpy. La idea es generar los coeficientes de la parábola que mejor se ajusta a los puntos. Primero se generan los coeficientes al azar y luego se producen pequeñas perturbaciones a los mismos y si generan un error menor al anterior se actualizan los coeficientes.
+
+## Cómo entregar el trabajo
+1. Asegúrese de tener la última versión del repositorio.
+    
+    (Cambie a la rama main y haga un Fetch)
+2. Cree una rama con su nombre.
+    
+    (Con el nombre 'TP6 - Legajo - Nombre y Apellido')
+3. Suba el trabajo a esa rama.
+4. Cree un Pull Request 
+
+## Fecha de entrega
+- 20 de octubre de 2021 a las 23:59 hs
+
 ```
- 1️⃣2️⃣3️⃣4️⃣5️⃣
- 🟢🟢🟢🟢🟡  1. 55936  Arcos, Lucas Isaias                     
- 🟢🟢🟢🟢🟡  2. 55547  Cabrera, Pablo Daniel                   
- 🟢🟢🟢🟢🟡  4. 59312  Cancino, Ignacio Matías                 
- 🟢🟢🔴🟢🟡  6. 59158  Corral, Luciano                         
- 🟢🟢🔴🟢🟡  9. 59251  Mamani, Daniel Fernando                 
  🟢🟢🟢🟢🔴 13. 55939  Mena, Iván Leandro                      
- 🔴🔴🔴🔴🟡 14. 55606  Meza, Julieta Noemí                     
  🟢🔴🔴🔴🔴 16. 58826  Moyano, Luján                           
- 🟢🟢🟢🟢🟡 18. 59358  Nieva Pastoriza, Gonzalo                
  🟢🔴🔴🔴🔴 19. 59162  Nuñez Orqueta, Luis Alberto             
  🟢🟢🟢🟢🟡 21. 59490  Parra, Ana Belén                        
  🔴🟢🟢🟢🟡 24. 55489  Pérez, Sofía Micaela                    
- 🔴🔴🔴🔴🟡 28. 59072  Rodríguez, Ana Paula                    
-```
-> 
-> Deben corregir el mismo para que pase todos los test y enviarlos antes del 
-> **Miercoles 9 de Octubre a las 23:59hs**.
-> 
-
-------
-------
-
-
-## Este trabajo cuenta como el `primer parcial`.
->  
-> Es un `trabajo individual` y puede usar todos los recursos a su disposición, incluyendo el material del curso y búsquedas en internet para resolver dudas. 
-
-> **Debe implementar su solución de manera individual** si comparte código con algún compañero invalida el trabajo de ambos.
-
-> Debe ser presentado hasta las `23:59 del sábado 5 de octubre`.
-> 
-
-## Enunciado
-
-El trabajo consiste en implementar, usando programación orientada a objetos, un sistema de facturación para una empresa de venta de productos.
-
-Asociado a cada clase a implementar tiene los test correspondientes que verifican que la implementación es correcta.
-
-Ademas estos test indican la forma exacta en que debe ser implementada la clase, incluyendo los nombres de los métodos y los parámetros que deben recibir y el comportamiento esperado.
-
-
-### Requerimientos
-
-#### Productos
-
-- Los productos tienen un código único de 4 dígitos, un nombre (1 a 100 caracteres), un precio (entre 10 y 10,000), un tipo (0 a 20 caracteres) y una cantidad en existencia (entre 0 y 1000).
-- Deben mantener la cantidad de productos en existencia y calcular su valor total.
-
-#### Catálogo
-
-- El catálogo se debe leer desde un archivo de texto `catalogo.csv` que tiene el siguiente formato (incluye encabezado):
-
-```text 
-codigo,nombre,precio,tipo,cantidad
 ```
 
-- Debe descontar la existencia disponible.
-- Debe agregar un producto.
-- Debe buscar un producto por código.
-- Debe poder analizar que oferta aplica a un producto
-- Debe poder grabar los cambios en el catálogo en un archivo con el mismo formato.
-- Debe poder generar un informe para ser impreso con el siguiente formato:
-
-```text
-INFORME CATALOGO 
-Cantidad de productos:   <cantidad productos>
-Cantidad de unidades:    <cantidad unidades>
-Precio promedio:       $ <precio promedio>
-Valor total:           $ <valor total>
-Tipos de productos: 
-  - <tipo>              :  <unidades>u x $ <precio promedio>
-  - ...
-Ofertas:
-  - <descripción oferta>
-  - ...
-```
-
-#### Ofertas
-
-- La empresa tiene ofertas en algunos productos. Las ofertas pueden aplicarse a productos específicos (por código) o a todos los productos de un tipo determinado.
-- Tipos de ofertas:
-  - **Descuento porcentual**: se aplica un descuento porcentual al precio del producto.
-  - **2x1**: si se compran 2 productos iguales, se cobra solo uno.
-- Las ofertas no son acumulables; si un producto es elegible para múltiples ofertas, se aplica primera registrada. 
-- Las ofertas deben determinar si son aplicables para un producto y cantidad dada.
-- Debe poder calcular el descuento aplicado a un producto.
-
-#### Clientes
-
-- Los clientes tienen un nombre, un apellido y un CUIT de 11 dígitos.
-
-#### Factura
-
-- La factura tiene un número secuencial, una fecha, un cliente y una lista de productos con la cantidad vendida de cada uno.
-- Debe calcular el total de la venta, teniendo en cuenta las ofertas aplicadas.
-- Debe generar texto para imprimir la factura con el siguiente formato:
-```text
-Factura: <numero>
-Fecha  : <fecha>
-Cliente: <nombre cliente> (<CUIT>)
-
-- <cantidad>u <nombre producto>            x $<precio> = $<subtotal>
-      <descripción oferta>                             - $<descuento>
-- ...
-
-                                             Subtotal:   $<subtotal general>
-                                             Descuentos: $<total descuentos>
-                                             -----------------------
-                                             Total:      $<total>
-```
