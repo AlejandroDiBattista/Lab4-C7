@@ -20,7 +20,6 @@ Los ejercicios son los siguientes:
 4. Cree un Pull Request 
 
 
-
 > **IMPORTANTE:** 
 > 
 > Esta es la clase que se tenia que 
