@@ -52,7 +52,7 @@ if 'modelo_entrenado' not in st.session_state:
 
 
 ## Entrenar Red Neuronal
-st.title("Predicción de Ventas Diarias")
+st.title("Clasificación y Predicción de Ventas Diarias")
 st.sidebar.header("Parámetros de la Red Neuronal")
 
 st.session_state.tasa_aprendizaje = st.sidebar.slider("Tasa de Aprendizaje", 0.0, 1.0, st.session_state.tasa_aprendizaje)
