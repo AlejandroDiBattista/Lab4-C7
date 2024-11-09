@@ -6,6 +6,13 @@ import torch.nn as nn
 import matplotlib.pyplot as plt
 
 
+import streamlit as st
+import pandas as pd
+import numpy as np
+import torch
+import torch.nn as nn
+import matplotlib.pyplot as plt
+
 ## Crear Red Neuronal
 class VentasNN(nn.Module):
     def __init__(self, input_size, hidden_size, output_size):
