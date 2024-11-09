@@ -8,11 +8,11 @@ import matplotlib.pyplot as plt
 
 
 ## Crear Red Neuronal
-class NeuralNetwork(nn.Module):
-    def __init__(self, hidden_neurons):
-        super(NeuralNetwork, self).__init__()
-        self.fc1 = nn.Linear(1, hidden_neurons)  
-        self.fc2 = nn.Linear(hidden_neurons, 1) 
+class RedNeuronal(nn.Module):
+    def __init__(self, neuronas_ocultas):
+        super(RedNeuronal, self).__init__()
+        self.fc1 = nn.Linear(1, neuronas_ocultas)  
+        self.fc2 = nn.Linear(neuronas_ocultas, 1) 
 
     def forward(self, x):
         x = torch.relu(self.fc1(x))
@@ -37,65 +37,74 @@ y_max = np.max(y)
 y_scaled = (y - y_min) / (y_max - y_min)
 
 
+## Inicializar session_state
+if 'tasa_aprendizaje' not in st.session_state:
+    st.session_state.tasa_aprendizaje = 0.1
+
+if 'epocas' not in st.session_state:
+    st.session_state.epocas = 100
+
+if 'neuronas_ocultas' not in st.session_state:
+    st.session_state.neuronas_ocultas = 5
+
+if 'modelo_entrenado' not in st.session_state:
+    st.session_state.modelo_entrenado = False
+
+
 ## Entrenar Red Neuronal
-st.title("Clasificación de Ventas Diarias")
+st.title("Predicción de Ventas Diarias")
 st.sidebar.header("Parámetros de la Red Neuronal")
 
-learning_rate = st.sidebar.slider("Tasa de Aprendizaje", 0.0, 1.0, 0.1)
-epochs = st.sidebar.slider("Cantidad de Épocas", 10, 10000, 100)
-hidden_neurons = st.sidebar.slider("Neuronas en Capa Oculta", 1, 100, 5)
+st.session_state.tasa_aprendizaje = st.sidebar.slider("Tasa de Aprendizaje", 0.0, 1.0, st.session_state.tasa_aprendizaje)
+st.session_state.epocas = st.sidebar.slider("Cantidad de Épocas", 10, 10000, st.session_state.epocas)
+st.session_state.neuronas_ocultas = st.sidebar.slider("Neuronas en Capa Oculta", 1, 100, st.session_state.neuronas_ocultas)
 
 if st.sidebar.button("Entrenar"):
-    # Dividir datos en entrenamiento y prueba
-    train_size = int(0.8 * len(X_scaled))
-    X_train, X_test = X_scaled[:train_size], X_scaled[train_size:]
-    y_train, y_test = y_scaled[:train_size], y_scaled[train_size:]
-    
-    model = NeuralNetwork(hidden_neurons)
+    model = RedNeuronal(st.session_state.neuronas_ocultas)
     criterion = nn.MSELoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    optimizer = torch.optim.Adam(model.parameters(), lr=st.session_state.tasa_aprendizaje)
 
     progress_bar = st.sidebar.progress(0)
     loss_history = []
 
-    for epoch in range(epochs):
-        model.train()
+    for epoch in range(st.session_state.epocas):
         optimizer.zero_grad()
-        
-        outputs = model(torch.FloatTensor(X_train))
-        loss = criterion(outputs, torch.FloatTensor(y_train))
-        
+        outputs = model(torch.FloatTensor(X_scaled))
+        loss = criterion(outputs, torch.FloatTensor(y_scaled))
         loss.backward()
         optimizer.step()
-        
         loss_history.append(loss.item())
-        progress_bar.progress((epoch + 1) / epochs)
+        
+        progress_bar.progress((epoch + 1) / st.session_state.epocas)
 
-    st.sidebar.success("Entrenamiento finalizado con éxito!")
-
-
+    st.success("Entrenamiento finalizado con éxito")
+    
     ## Guardar Modelo
     torch.save(model.state_dict(), 'red_neuronal.pth')
+    
+    st.session_state.modelo_entrenado = True
 
 
-    ## Graficar Predicciones
-    plt.figure(figsize=(10,5))
-    plt.plot(loss_history)
-    plt.title('Evolución de la Función de Costo')
-    plt.xlabel('Épocas')
-    plt.ylabel('Pérdida')
-    plt.grid()
-    st.sidebar.pyplot(plt)
-
+## Graficar Predicciones
+if st.session_state.modelo_entrenado:
+    model = RedNeuronal(st.session_state.neuronas_ocultas)
+    model.load_state_dict(torch.load('red_neuronal.pth'))
     model.eval()
-    with torch.no_grad():
-        predictions = model(torch.FloatTensor(X_scaled)).numpy()
 
     plt.figure(figsize=(10,5))
     plt.scatter(X, y, color='blue', label='Datos Reales')
-    plt.plot(X, (predictions * (y_max - y_min)) + y_min, color='red', label='Predicciones')
+    plt.plot(X, (model(torch.FloatTensor(X_scaled)).detach().numpy() * (y_max - y_min)) + y_min, color='red', label='Predicciones')
     plt.title('Predicciones vs Ventas Reales')
     plt.xlabel('Día del Mes')
     plt.ylabel('Ventas')
     plt.legend()
+    st.pyplot(plt)
+
+    ## Graficar Costo
+    plt.figure(figsize=(10,5))
+    plt.plot(loss_history)
+    plt.title('Evolución del Costo')
+    plt.xlabel('Épocas')
+    plt.ylabel('Costo')
+    plt.grid()
     st.pyplot(plt)
