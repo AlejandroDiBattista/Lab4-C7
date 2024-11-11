@@ -9,13 +9,11 @@ from sklearn.preprocessing import MinMaxScaler
 from torch.utils.data import DataLoader, TensorDataset
 from tqdm import tqdm
 
-
 st.title('Estimativo de Ventas Diarias')
 
 data = pd.read_csv('ventas.csv')
 st.subheader('Datos de Ventas Diarias')
 st.write(data)
-
 
 scaler = MinMaxScaler()
 data[['dia', 'ventas']] = scaler.fit_transform(data[['dia', 'ventas']])
