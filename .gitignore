@@ -1,3 +1,4 @@
 .DS_Store
 catalogo-prueba.csv
 /clases/data
+/clases/__pycache__
