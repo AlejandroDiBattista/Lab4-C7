@@ -28,6 +28,20 @@ def mostrar_informacion(datos, sucursal):
     for producto in productos:
         datos_producto = datos[datos["Producto"] == producto]
         
+        # Validaciones de datos
+        if datos_producto["Ingreso_total"].isnull().any():
+            st.error(f"El producto '{producto}' tiene valores nulos en la columna 'Ingreso_total'.")
+            continue
+        if datos_producto["Unidades_vendidas"].isnull().any():
+            st.error(f"El producto '{producto}' tiene valores nulos en la columna 'Unidades_vendidas'.")
+            continue
+        if (datos_producto["Ingreso_total"] < 0).any():
+            st.error(f"El producto '{producto}' tiene valores negativos en 'Ingreso_total'.")
+            continue
+        if (datos_producto["Unidades_vendidas"] <= 0).any():
+            st.error(f"El producto '{producto}' tiene valores no positivos en 'Unidades_vendidas'.")
+            continue
+        
         # Cálculo de métricas
         unidades_vendidas = datos_producto["Unidades_vendidas"].sum()
         ingreso_total = datos_producto["Ingreso_total"].sum()
@@ -36,9 +50,13 @@ def mostrar_informacion(datos, sucursal):
         precio_promedio = ingreso_total / unidades_vendidas
         margen_promedio = (ingreso_total - costo_total) / ingreso_total * 100
         
+        # Cálculo de delta para Precio Promedio (comparado con el promedio global)
+        precio_promedio_global = datos["Ingreso_total"].sum() / datos["Unidades_vendidas"].sum()
+        delta_precio = precio_promedio - precio_promedio_global
+        
         # Mostrar métricas
         st.header(producto)
-        st.metric("Precio Promedio", f"${precio_promedio:,.2f}")
+        st.metric("Precio Promedio", f"${precio_promedio:,.2f}", delta=f"${delta_precio:,.2f}")
         st.metric("Margen Promedio", f"{margen_promedio:.2f}%", delta=f"{margen_promedio - 30:.2f}%")
         st.metric("Unidades Vendidas", f"{unidades_vendidas:,}", delta=f"{unidades_vendidas * 0.1:.2f}%")
 
