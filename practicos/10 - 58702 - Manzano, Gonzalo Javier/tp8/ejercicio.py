@@ -7,9 +7,9 @@ from scipy import stats
 # Función para mostrar la información del alumno
 def mostrar_informacion_alumno():
     with st.container():
-        st.markdown('**Legajo:** 55.555')
-        st.markdown('**Nombre:** Juan Pérez')
-        st.markdown('**Comisión:** C1')
+        st.markdown('**Legajo:** 58.702')
+        st.markdown('**Nombre:** Gonzalo Manzano')
+        st.markdown('**Comisión:** C7')
 
 # Función para cargar y mostrar el archivo CSV
 def cargar_archivo():
