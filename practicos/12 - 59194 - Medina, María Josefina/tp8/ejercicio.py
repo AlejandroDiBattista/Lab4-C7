@@ -8,8 +8,7 @@ import seaborn as sns
 # url = 'https://tp8-555555.streamlit.app/'
 
 st.set_page_config(page_title="parcial", layout="centered", initial_sidebar_state="auto")
-#st.markdown(<style>.css-1d391kg {background-color: white ;color: black}</style>,unsafe_allow_html=True
-#)
+
 
 st.title("Por favor, selecciona el archivo CSV desde la barra lateal")
 st.sidebar.title("Archivos de datos")
@@ -22,54 +21,71 @@ def mostrar_informacion_alumno():
 
 mostrar_informacion_alumno()
 
-#data_gaseosa= pd.read_csv("gaseosas.csv")
-#data_vinos= pd.read_csv("vinos.csv")
 sucursales=["Todas", "Sucursal Norte", "Sucursal Sur", "Sucursal Centro"]
 archivo=None
 datos=None
-
 
 archivosCSV = st.sidebar.file_uploader("Sube un archivo csv", type=["csv"])
 if archivosCSV:
     archivo = pd.read_csv(archivosCSV)
     st.success("Archivo cargado correctamente")
-#else:
-#    archivo=None
 
 seleccionSucursal= st.sidebar.selectbox("Seleccione una sucursal: ", sucursales)
 if archivo is not None:
     if seleccionSucursal == "Todas":
-        title = "Datos de todas las sucursales"
-        datos = archivo
+        datos = archivo 
     else:
-        title = f"Datos de {seleccionSucursal}"
         datos =archivo[archivo["Sucursal"] == seleccionSucursal]
-        
-    st.header(title)
-    st.write(datos)
 
-
-    st.write ("Tabla de datos:")
-    st.dataframe(datos)
-
-    st.subheader("Calculos por Producto")
     productos= datos["Producto"].unique()
-    resultados= []
 
+ 
     for producto in productos:
-        datosP = datos[datos["Producto"]==producto]
-        unidades= datosP["Unidades vendidas"].sum()
-        ingresoTotal=datosP["Ingreso total"].sum()
-        costoTotal=datosP["Costo TOtal"].sum()
-        precioPromedio=ingresoTotal / unidades if unidades> 0 else 0
-        #
-        margenPromedio = (ingresoTotal - costoTotal) / ingresoTotal if ingresoTotal > 0 else 0
-        resultados.append({
-            "Producto":producto,
-            "Unidades Vendidas": unidades,
-            "Precio Promedio": round(precioPromedio, 2),
-            "Margen Promedio": round(margenPromedio, 2)
-        })
+        datosP = datos[datos["Producto"] == producto]
+        unidades_vendidas= datosP["Unidades_vendidas"].sum()
+        ingreso_total=datosP["Ingreso_total"].sum()
+        costo_total=datosP["Costo_total"].sum()
+        precio_promedio=ingreso_total / unidades_vendidas if unidades_vendidas > 0 else 0
+        margen_promedio = (ingreso_total - costo_total) / ingreso_total if ingreso_total > 0 else 0
+
+        with st.container():
+            st.markdown(
+            """
+            <div style="
+                border: 0.5px solid #ddd;
+                padding: 0.5px;
+                margin-bottom: 10px;
+                border-radius: 4px;
+                background-color: #fafafa;
+                box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);">
+            """,
+            unsafe_allow_html=True,
+        )
+            col1, col2 = st.columns([1,2])
+            with col1:
+                st.subheader(producto)
+                st.metric("Precio promedio:", f"${precio_promedio:.2f}")
+                st.metric("Margen promedio:", f"{margen_promedio * 100:.2f}%")
+                st.metric("Unidades Vendidas:", f"{unidades_vendidas}")
+            
+            with col2:
+                ventasMensuales=datosP.groupby(["Año", "Mes"])["Unidades_vendidas"].sum().reset_index()
+                ventasMensuales["Fecha"] = pd.to_datetime(ventasMensuales["Año"].astype(str) + "-" + ventasMensuales["Mes"].astype(str) + "-01")
+                plt.figure(figsize=(10,7))
+                sns.lineplot(data=ventasMensuales, x="Fecha", y="Unidades_vendidas", label="Ventas Mensuales")
+                z= np.polyfit(range(len(ventasMensuales)), ventasMensuales["Unidades_vendidas"], 1)
+                p = np.poly1d(z)
+                
+                plt.plot(ventasMensuales["Fecha"], p(range(len(ventasMensuales))), label="Tendencia", linestyle="--", color="red")
+                
+                plt.title(f"Evolución de Ventas Mensuales:")
+                plt.xlabel("Año-Mes")
+                plt.ylabel("Unidades Vendidas")
+                
+                plt.legend([ (f"{producto}"), "Tendencia"], loc="upper left")
+       
+                st.pyplot(plt)
+            st.markdown("</div>", unsafe_allow_html=True)
+
+
         
-        resultadosDatos = pd.DataFrame(resultados)
-        st.dataframe(resultadosDatos)
