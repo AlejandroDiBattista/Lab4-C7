@@ -36,17 +36,17 @@ if archivo_cvs is not None:
     for producto in productos:
         df_producto = df[df['Producto'] == producto]
         precio_promedio = (df_producto['Ingreso_total'].sum() / df_producto['Unidades_vendidas'].sum())
-        #margen_promedio = ((df_producto['Ingreso_total'].sum() - df_producto['Costo_total'].sum()) / df_producto['Ingreso_total'].sum())
-        margen_promedio = ((df_producto['Ingreso_total'].sum() - df_producto['Costo_total'].sum()) / df_producto['Ingreso_total'].sum()) * 100
-        margen_promedio = round(margen_promedio, 2)
+        margen_promedio = ((df_producto['Ingreso_total'].sum() - df_producto['Costo_total'].sum()) / df_producto['Ingreso_total'].sum())
+        
         unidades_venidas = df_producto['Unidades_vendidas'].sum()
         
 
         st.subheader(f"{producto}")
         col1, col2, col3 = st.columns(3)
         col1.metric('Precio Promedio', f"${precio_promedio:.2f}")
-        col2.metric('Margen Promedio', f"{margen_promedio:.2%}")
+        col2.metric('Margen Promedio', f"{margen_promedio:.2f}%")
         col3.metric('Unidades Vendidas', f"{unidades_venidas:,.2f}")
+        
     
     
         df_producto['Año'] = df_producto['Año'].astype(int)
