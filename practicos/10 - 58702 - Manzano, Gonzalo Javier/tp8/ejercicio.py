@@ -53,12 +53,19 @@ def mostrar_informacion(datos, sucursal):
         # Cálculo de delta para Precio Promedio (comparado con el promedio global)
         precio_promedio_global = datos["Ingreso_total"].sum() / datos["Unidades_vendidas"].sum()
         delta_precio = precio_promedio - precio_promedio_global
-        
+        precio_promedio_2024 = datos_producto[datos_producto["Año"] == 2024]["Ingreso_total"].sum() / datos_producto[datos_producto["Año"] == 2024]["Unidades_vendidas"].sum()
+        precio_promedio_2023 = datos_producto[datos_producto["Año"] == 2023]["Ingreso_total"].sum() / datos_producto[datos_producto["Año"] == 2023]["Unidades_vendidas"].sum()
+        margen_promedio_2024 = ((datos_producto[datos_producto["Año"] == 2024]["Ingreso_total"].sum() - datos_producto[datos_producto["Año"] == 2024]["Costo_total"].sum()) / datos_producto[datos_producto["Año"] == 2024]["Ingreso_total"].sum()) * 100
+        margen_promedio_2023 = ((datos_producto[datos_producto["Año"] == 2023]["Ingreso_total"].sum() - datos_producto[datos_producto["Año"] == 2023]["Costo_total"].sum()) / datos_producto[datos_producto["Año"] == 2023]["Ingreso_total"].sum()) * 100
+        unidades_2024 = datos_producto[datos_producto["Año"] == 2024]["Unidades_vendidas"].sum()
+        unidades_2023 = datos_producto[datos_producto["Año"] == 2023]["Unidades_vendidas"].sum()
+
         # Mostrar métricas
         st.header(producto)
-        st.metric("Precio Promedio", f"${precio_promedio:,.2f}", delta=f"${delta_precio:,.2f}")
-        st.metric("Margen Promedio", f"{margen_promedio:.2f}%", delta=f"{margen_promedio - 30:.2f}%")
-        st.metric("Unidades Vendidas", f"{unidades_vendidas:,}", delta=f"{unidades_vendidas * 0.1:.2f}%")
+        st.metric("Precio Promedio", f"${precio_promedio:,.2f}", delta=f"{((precio_promedio_2024 / precio_promedio_2023) - 1) * 100:.2f}%")
+        st.metric("Margen Promedio", f"{margen_promedio:.2f}%", delta=f"{((margen_promedio_2024 / margen_promedio_2023) - 1) * 100:.2f}%")
+        st.metric("Unidades Vendidas", f"{unidades_vendidas:,}", delta=f"{((unidades_2024 / unidades_2023) - 1) * 100:.2f}%")
+
 
         # Preparar datos para la columna Fecha
         datos_producto['Año'] = datos_producto['Año'].astype(int)
