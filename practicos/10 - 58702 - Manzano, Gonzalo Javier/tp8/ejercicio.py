@@ -4,6 +4,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats
 
+# ATENCION: Debe colocar la direccion en la que ha sido publicada la aplicacion en la siguiente linea\
+# link del deploy de el Trabajo Practico Numero 8: 
+# URL = 'https://ejeciciolabgonzalomanzano.streamlit.app/'
+
 # Función para mostrar la información del alumno
 def mostrar_informacion_alumno():
     with st.container():
