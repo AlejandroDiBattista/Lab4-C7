@@ -1,5 +1,2 @@
-pandas
-numpy
-matplotlib
-scipy
 streamlit
+matplotlib
