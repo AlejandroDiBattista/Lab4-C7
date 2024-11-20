@@ -28,7 +28,7 @@ datos=None
 archivosCSV = st.sidebar.file_uploader("Sube un archivo csv", type=["csv"])
 if archivosCSV:
     archivo = pd.read_csv(archivosCSV)
-    st.success("Archivo cargado correctamente")
+    #st.success("Archivo cargado correctamente")
 
 seleccionSucursal= st.sidebar.selectbox("Seleccione una sucursal: ", sucursales)
 if archivo is not None:
@@ -39,15 +39,24 @@ if archivo is not None:
 
     productos= datos["Producto"].unique()
 
- 
     for producto in productos:
         datosP = datos[datos["Producto"] == producto]
         unidades_vendidas= datosP["Unidades_vendidas"].sum()
         ingreso_total=datosP["Ingreso_total"].sum()
         costo_total=datosP["Costo_total"].sum()
-        precio_promedio=ingreso_total / unidades_vendidas if unidades_vendidas > 0 else 0
-        margen_promedio = (ingreso_total - costo_total) / ingreso_total if ingreso_total > 0 else 0
-
+        #p/flechitas de variacion porcentual
+        ventasAnuales= datosP.groupby("Año")["Unidades_vendidas"].sum()
+        ingresosTotalAnual=datosP.groupby("Año")["Ingreso_total"].sum()
+        costoAnual = datosP.groupby("Año")["Costo_total"].sum()
+        
+        precio_promedio=ingreso_total / unidades_vendidas 
+        margen_promedio = (ingreso_total - costo_total) / ingreso_total
+        margenAnual = (ingresosTotalAnual - costoAnual)/ingresosTotalAnual
+        
+        variacionPorcentual= ventasAnuales.pct_change().iloc[-1]*100
+        precioPromedioAnual = ingresosTotalAnual/ventasAnuales
+        variacionPrecioPromedio =precioPromedioAnual.pct_change().iloc[-1]*100
+        variacionMargenAnual=margenAnual.pct_change().iloc[-1] * 100 
         with st.container():
             st.markdown(
             """
@@ -64,9 +73,9 @@ if archivo is not None:
             col1, col2 = st.columns([1,2])
             with col1:
                 st.subheader(producto)
-                st.metric("Precio promedio:", f"${precio_promedio:.2f}")
-                st.metric("Margen promedio:", f"{margen_promedio * 100:.2f}%")
-                st.metric("Unidades Vendidas:", f"{unidades_vendidas}")
+                st.metric("Precio promedio:", f"${int(precio_promedio):,}", f"{variacionPrecioPromedio:.2f}%", delta_color="normal")
+                st.metric("Margen promedio:", f"{round(margen_promedio * 100)}%", f"{variacionMargenAnual:.2f}%")
+                st.metric("Unidades Vendidas:", f"{unidades_vendidas:,.2f}", f"{variacionPorcentual:.2f}%")
             
             with col2:
                 ventasMensuales=datosP.groupby(["Año", "Mes"])["Unidades_vendidas"].sum().reset_index()
@@ -88,4 +97,4 @@ if archivo is not None:
             st.markdown("</div>", unsafe_allow_html=True)
 
 
-        
+            
