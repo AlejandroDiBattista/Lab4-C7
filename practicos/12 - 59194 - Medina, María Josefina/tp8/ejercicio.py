@@ -4,13 +4,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-## ATENCION: Debe colocar la direccion en la que ha sido publicada la aplicacion en la siguiente linea\
-# url = 'https://tp8-555555.streamlit.app/'
+url = 'https://tp8-59194.streamlit.app/'
 
 st.set_page_config(page_title="parcial", layout="centered", initial_sidebar_state="auto")
 
 
-st.title("Por favor, selecciona el archivo CSV desde la barra lateal")
+st.title("Ingrese un archivo CSV desde la barra lateral")
 st.sidebar.title("Archivos de datos")
 
 def mostrar_informacion_alumno():
