@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 ## ATENCION: Debe colocar la direccion en la que ha sido publicada la aplicacion en la siguiente linea\
-# url = 'https://tp8-555555.streamlit.app/'
+# url = 'https://tp8-parciallab-58700.streamlit.app/'
 
 #layout:'wide' permite mostrar mas info en una sola vista , evitando la necesidad de desplazarse(centra el contenido)
 st.set_page_config(layout="wide", page_title="Visualización de Ventas")#define configuraciones globales para la app
