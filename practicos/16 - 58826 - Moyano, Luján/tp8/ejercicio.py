@@ -134,5 +134,4 @@ if archivos is not None:
     except Exception as e:
         st.error(f"⚠️ Hubo un error al procesar el archivo: {e}")
 
-## ATENCION: Debe colocar la direccion en la que ha sido publicada la aplicacion en la siguiente linea\
 url = 'https://tp8-58826.streamlit.app/'
