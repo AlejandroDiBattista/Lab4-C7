@@ -6,7 +6,6 @@ import matplotlib.dates as mdates
 
 ## ATENCION: Debe colocar la direccion en la que ha sido publicada la aplicacion en la siguiente linea\
 # url = 'https://tp8-59348.streamlit.app/'
-# Hola profesor, tuve problemas para deployar debido a problemas con la dependencia maltpotlib y sus versiones. Podria ejecutar este codigo?
 
 def mostrar_informacion_alumno():
     with st.container(border=True):
