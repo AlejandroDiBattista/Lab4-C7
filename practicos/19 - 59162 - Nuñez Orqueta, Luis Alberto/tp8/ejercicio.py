@@ -3,9 +3,8 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
 
-"url:https://ssz6djgbnm8cxvykmdyng3.streamlit.app/"
+# "url:https://ssz6djgbnm8cxvykmdyng3.streamlit.app/"
 
-st.set_page_config(page_title="Análisis de Ventas", layout="wide")
 st.title("Análisis de Ventas")
 
 st.sidebar.header("Cargar archivo de datos")
