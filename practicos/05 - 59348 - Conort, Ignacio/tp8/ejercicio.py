@@ -33,6 +33,22 @@ def calcularValores(dataProductos):
     ).reset_index()
     return valoresProducto
 
+def calcularVariacionAnual(dataProductos, producto):
+    productoDP = dataProductos[dataProductos['Producto'] == producto]
+    productoDP['Fecha'] = pd.to_datetime(productoDP['Año'].astype(str) + '-' + productoDP['Mes'].astype(str) + '-01', format='%Y-%m-%d')
+    productoAnual = productoDP.groupby('Año').agg(
+        Precio_promedio=('Precio_promedio', 'mean'),
+        Margen_promedio=('Margen_promedio', 'mean'),
+        Unidades_vendidas=('Unidades_vendidas', 'sum')
+    ).reset_index()
+    productoAnual['Variacion_Porcentual_Precio'] = productoAnual['Precio_promedio'].pct_change() * 100
+    productoAnual['Variacion_Porcentual_Margen'] = productoAnual['Margen_promedio'].pct_change() * 100
+    productoAnual['Variacion_Porcentual_Unidades'] = productoAnual['Unidades_vendidas'].pct_change() * 100
+    variacion_promedio_precio = productoAnual['Variacion_Porcentual_Precio'].mean()
+    variacion_promedio_margen = productoAnual['Variacion_Porcentual_Margen'].mean()
+    variacion_promedio_unidades = productoAnual['Variacion_Porcentual_Unidades'].mean()
+    return variacion_promedio_precio, variacion_promedio_margen, variacion_promedio_unidades
+
 def graficarProducto(dataProductos, producto):
     productoDP = dataProductos[dataProductos['Producto'] == producto]
     productoDP['Fecha'] = pd.to_datetime(productoDP['Año'].astype(str) + '-' + productoDP['Mes'].astype(str) + '-01', format='%Y-%m-%d')
@@ -77,11 +93,18 @@ def app():
                 precio_promedio = row['Precio_promedio']
                 margen_promedio = row['Margen_promedio']
                 unidades_vendidas = row['Unidades_vendidas']
-                st.subheader(f"{producto}")
-                st.write(f"**Precio Promedio:** ${precio_promedio:.2f}")
-                st.write(f"**Margen Promedio:** {margen_promedio * 100:.2f}%")
-                st.write(f"**Unidades Vendidas:** {unidades_vendidas}")
-                st.pyplot(graficarProducto(dataProductos, producto))
+
+                variacion_promedio_precio, variacion_promedio_margen, variacion_promedio_unidades = calcularVariacionAnual(dataProductos, producto)
+                
+                with st.container(border=True):
+                    st.markdown(f"### {producto}", unsafe_allow_html=True)
+                    col1, col2 = st.columns([1, 3])  
+                    with col1: 
+                        st.metric(label="Precio Promedio", value=f"${precio_promedio:.2f}",delta=f"{variacion_promedio_precio:.2f}%", delta_color="normal")
+                        st.metric(label="Margen Promedio", value=f"{margen_promedio * 100:.2f}%",delta=f"{variacion_promedio_margen:.2f}%", delta_color="normal")
+                        st.metric(label="Unidades Vendidas", value=f"{unidades_vendidas}",delta=f"{variacion_promedio_unidades:.2f}%", delta_color="normal")
+                    with col2: 
+                        st.pyplot(graficarProducto(dataProductos, producto))
         else:
             st.error("No se pudo cargar el archivo correctamente.")
     else:
