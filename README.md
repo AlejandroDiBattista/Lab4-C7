@@ -13,7 +13,6 @@
 * `02` | **55547**  | Cabrera, Pablo Daniel
 * `04` | **59312**  | Cancino, Ignacio Matías
 * `09` | **59251**  | Mamani, Daniel Fernando
-* `32` | **59250**  | Martinez, Ignacio
 * `11` | **59043**  | Medina, Elias Manuel
 * `14` | **55606**  | Meza, Julieta Noemí
 * `16` | **58826**  | Moyano, Luján
@@ -21,6 +20,7 @@
 * `25` | **58934**  | Quiroga Gil, Juan Ignacio
 * `26` | **58935**  | Quiroga Gil, Santiago José
 * `31` | **59047**  | Torres, Francisco Gabriel
+* `32` | **59250**  | Martinez, Ignacio
 
 ### Recuperar (15)
 
@@ -35,10 +35,10 @@
 * `05` | **59348**  | Conort, Ignacio
 * `08` | **59174**  | Maceda, Tiziano Gabriel
 * `15` | **59134**  | Molina, Tomás Agustín
-* `33` | **58728**  | Montivero Lizondo, Martino
 * `22` | **58794**  | Patti, Mauro Luciano
 * `27` | **58912**  | Quiroga, Leandro Iván
 * `28` | **59072**  | Rodríguez, Ana Paula
+* `33` | **58728**  | Montivero Lizondo, Martino
 
 ##### Debe corregir resultados y presentación 
 * `06` | **59158**  | Corral, Luciano
@@ -50,8 +50,8 @@
 * `20` | **59049**  | Ortiz, Matías Nicolás
 * `21` | **59490**  | Parra, Ana Belén
 * `24` | **55489**  | Pérez, Sofía Micaela
-* `30` | **57586**  | Roldán, Julieta del Rocío
 * `29` | **55776**  | Roldán Vicecci, Camila Lucía
+* `30` | **57586**  | Roldán, Julieta del Rocío
 
 ## ¿Cómo recuperar el trabajo?
 **Para promocionar la materia, tanto los resultados como la presentación deben estar correctos.**
