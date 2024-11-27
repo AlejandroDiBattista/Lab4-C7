@@ -3,34 +3,18 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-## ATENCION: Debe colocar la direccion en la que ha sido publicada la aplicacion en la siguiente linea\
-# url = 'https://tp8-58769.streamlit.app/'
-
 st.set_page_config(page_title="Análisis de Ventas", layout="wide")
 
+# Información del estudiante
 def mostrar_informacion_alumno():
-    st.markdown(
-        """
-        <div style='
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 15px;
-            background-color: #f9f9f9;
-            margin: 10px auto;
-            width: 50%;
-        '>
-            <strong>Legajo:</strong> 58.769<br>
-            <strong>Nombre:</strong> Máximo Callejas<br>
-            <strong>Comisión:</strong> C7
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    with st.container(border=True):
+        st.markdown("**Legajo:** 58.769")
+        st.markdown("**Nombre:** Máximo Callejas")
+        st.markdown("**Comisión:** C7")
 
-
-
-# Cargar archivo csv
+# Cargar archivo CSV
 def cargarDatos():
+    st.sidebar.markdown("## Cargar archivo de datos")
     uploaded_file = st.sidebar.file_uploader("**Subir archivo CSV**", type=["csv"])
     if uploaded_file:
         try:
@@ -41,8 +25,7 @@ def cargarDatos():
             st.sidebar.error(f"Error al cargar los datos: {e}")
     return None
 
-
-
+# Calcular métricas
 def calcularMetricas(data):
     data['Fecha'] = data['Año'].astype(str) + "-" + data['Mes'].astype(str)
     data['Fecha'] = pd.to_datetime(data['Fecha'], format="%Y-%m")
@@ -60,7 +43,7 @@ def calcularMetricas(data):
     variaciones = []
     for producto in data['Producto'].unique():
         producto_data = resumen_anual[resumen_anual['Producto'] == producto]
-        producto_data = producto_data.sort_values('Año')
+        # producto_data = producto_data.sort_values('Año')
 
         if len(producto_data['Año'].unique()) < 2:
             variaciones.append({
@@ -75,6 +58,7 @@ def calcularMetricas(data):
         incrementos_margen = []
         incrementos_unidades = []
         
+        # Calcular incrementos anuales
         for i in range(1, len(producto_data)):
             unidades_anterior = producto_data.iloc[i - 1]['Unidades_vendidas']
             unidades_actual = producto_data.iloc[i]['Unidades_vendidas']
@@ -86,6 +70,7 @@ def calcularMetricas(data):
             margen_actual = producto_data.iloc[i]['Margen_promedio']
             incrementos_margen.append((margen_actual - margen_anterior) / margen_anterior * 100)
 
+        # Promedio de los incrementos
         promedio_precio = np.mean(incrementos_precio)
         promedio_margen = np.mean(incrementos_margen)
         promedio_unidades = np.mean(incrementos_unidades)
@@ -109,121 +94,84 @@ def calcularMetricas(data):
     
     return resumen
 
-
-
+# Graficar evolución de ventas
 def graficarVentas(data, producto):
-    data['Fecha'] = data['Año'].astype(str) + "-" + data['Mes'].astype(str)
-    data['Fecha'] = pd.to_datetime(data['Fecha'], format="%Y-%m")
+    data['Fecha'] = pd.to_datetime(data['Año'].astype(str) + "-" + data['Mes'].astype(str), format="%Y-%m")
     producto_data = data[data['Producto'] == producto].groupby('Fecha')['Unidades_vendidas'].sum().reset_index()
 
-    plt.figure(figsize=(10, 6))
-    plt.plot(producto_data['Fecha'], producto_data['Unidades_vendidas'], label=producto)
-    z = np.polyfit(producto_data.index, producto_data['Unidades_vendidas'], 1)
+    # Configurar la figura
+    plt.figure(figsize=(8, 4))
+    
+    # Línea azul para las ventas
+    plt.plot(producto_data['Fecha'], producto_data['Unidades_vendidas'], label=producto, linestyle='-', linewidth=2)
+    
+    # Cálculo de la línea de tendencia (roja)
+    z = np.polyfit(np.arange(len(producto_data)), producto_data['Unidades_vendidas'], 1)  # Ajuste lineal
     p = np.poly1d(z)
-    plt.plot(producto_data['Fecha'], p(producto_data.index), "r--", label='Tendencia')
-    plt.title(f'Evolución de Ventas Mensual - {producto}')
-    plt.xlabel('Año-Mes')
-    plt.ylabel('Unidades Vendidas')
-    plt.legend()
+    plt.plot(producto_data['Fecha'], p(np.arange(len(producto_data))), "r--", label="Tendencia", linewidth=2)
+    
+    # Ajustar límites del gráfico para que comience desde 0
     plt.ylim(bottom=0)
     
+    # Título y etiquetas
+    plt.title(f"Evolución de Ventas Mensual - {producto}", fontsize=14)
+    plt.xlabel("Año - Mes", fontsize=12)
+    plt.ylabel("Unidades Vendidas", fontsize=12)
+    plt.grid(alpha=0.3)
+    
+    # Agregar leyenda
+    plt.legend()
+    
+    # Mostrar gráfico en Streamlit
     st.pyplot(plt)
 
-
-
-def mostrarMetrica(titulo, valor_principal, variacion, es_porcentaje=False):
-    flecha = "▲" if variacion > 0 else "▼"
-    color = "green" if variacion > 0 else "red"
-    variacion_texto = f"<span style='color:{color}; font-size:14px;'>{flecha} {variacion:+.2f}%</span>"
-    unidad = "%" if es_porcentaje else ""
-    
-    return (
-        f"<div style='text-align:center;'>"
-        f"<span style='font-size:16px;'>{titulo}</span><br>"
-        f"<span style='font-size:24px; font-weight:bold;'>{valor_principal}{unidad}</span><br>"
-        f"{variacion_texto}"
-        f"</div>"
-    )
-
-
-
+# Interfaz principal
 def main():
-    uploaded_file = st.sidebar.file_uploader("**Subir archivo CSV**", type=["csv"])
-    if not uploaded_file:
-        st.markdown(
-            "<div style='text-align:center; color:gray; font-size:25px; margin-top:10px;'>"
-            "Por favor, suba un archivo .csv desde la barra lateral"
-            "</div>",
-            unsafe_allow_html=True,
-        )
+    datos = cargarDatos()
+
+    if datos is None:
+        st.markdown("### Por favor, sube un archivo CSV desde la barra lateral.")
         mostrar_informacion_alumno()
-    
-    datos = None
-    if uploaded_file:
-        try:
-            datos = pd.read_csv(uploaded_file)
-            st.sidebar.success("Datos cargados correctamente")
-        except Exception as e:
-            st.sidebar.error(f"Error al cargar los datos: {e}")
-    
-    if datos is not None:
-        sucursales = ['Todas'] + datos['Sucursal'].unique().tolist()
+    else:
+        sucursales = ["Todas"] + datos["Sucursal"].unique().tolist()
         sucursal_seleccionada = st.sidebar.selectbox("Seleccionar Sucursal", sucursales)
-        
-        if sucursal_seleccionada != 'Todas':
-            datos = datos[datos['Sucursal'] == sucursal_seleccionada]
+
+        if sucursal_seleccionada != "Todas":
+            datos = datos[datos["Sucursal"] == sucursal_seleccionada]
 
         resumen = calcularMetricas(datos)
 
+        # Modificar el título para que diga "Datos de (sucursal seleccionada)"
+        st.title(f"Datos de {sucursal_seleccionada if sucursal_seleccionada != 'Todas' else 'todas las Sucursales'}")
+        
         for _, row in resumen.iterrows():
-            with st.container():
-                st.markdown(
-                    f"""
-                    <div style='border: 1px solid black; padding: 20px; margin: 10px 0; border-radius: 5px;'>
-                        <h3 style="text-align:center;">{row['Producto']} - {sucursal_seleccionada if sucursal_seleccionada != 'Todas' else 'Todas las Sucursales'}</h3>
-                    """,
-                    unsafe_allow_html=True
-                )
+            # Contenedor sin borde
+            with st.container(border=True):
+                st.subheader(f"{row['Producto']}")
                 
+                # Crear las columnas para las métricas y el gráfico
                 col1, col2 = st.columns([1, 3])
-                
                 with col1:
-                    #Precio Promedio
-                    st.markdown(
-                        mostrarMetrica(
-                            "Precio Promedio",
-                            f"${row['Precio_promedio']:.2f}",
-                            row['Variacion_precio']
-                        ),
-                        unsafe_allow_html=True
+                    # Mostrar las métricas con el valor real y la variación
+                    st.metric(
+                        label="Precio Promedio", 
+                        value=f"${row['Precio_promedio']:.2f}", 
+                        delta=f"{row['Variacion_precio']:+.2f}%"
                     )
-                    
-                    #Margen Promedio
-                    st.markdown(
-                        mostrarMetrica(
-                            "Margen Promedio",
-                            f"{row['Margen_promedio']*100:.2f}",
-                            row['Variacion_margen'],
-                            es_porcentaje=True
-                        ),
-                        unsafe_allow_html=True
+                    st.metric(
+                        label="Margen Promedio", 
+                        value=f"{row['Margen_promedio']*100:.2f}%",  # Corregido para que no haya un "0." al principio
+                        delta=f"{row['Variacion_margen']:+.2f}%"
                     )
-                    
-                    #Unidades Vendidas
-                    st.markdown(
-                        mostrarMetrica(
-                            "Unidades Vendidas",
-                            f"{int(row['Unidades_vendidas']):,}",
-                            row['Variacion_unidades']
-                        ),
-                        unsafe_allow_html=True
+                    st.metric(
+                        label="Unidades Vendidas", 
+                        value=f"{row['Unidades_vendidas']:,}",  # Formato con puntos
+                        delta=f"{row['Variacion_unidades']:+.2f}%"
                     )
-                
+
                 with col2:
-                    #Gráfico
+                    # Mostrar el gráfico de ventas
                     graficarVentas(datos, row['Producto'])
 
-                st.markdown("</div>", unsafe_allow_html=True)
-                
 if __name__ == "__main__":
     main()
