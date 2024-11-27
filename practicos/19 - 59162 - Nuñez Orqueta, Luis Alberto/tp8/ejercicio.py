@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
+
 #"https://ssz6djgbnm8cxvykmdyng3.streamlit.app/"
 # Configuración de la página
 st.set_page_config(page_title="Análisis de Ventas", layout="wide")
