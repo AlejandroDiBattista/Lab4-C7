@@ -12,9 +12,6 @@ def mostrar_datos_usuario():
         st.markdown('**Nombre:** Leandro Ivan Quiroga')
         st.markdown('**Comisión:** C7')
 
-mostrar_datos_usuario()
-
-
 def generar_grafico(data, nombre_producto):
     agrupado = data.groupby(['Año', 'Mes'])['Unidades_vendidas'].sum().reset_index()
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -44,13 +41,13 @@ if archivo is not None:
     sucursal = st.sidebar.selectbox("Sucursal", sucursales)
     if sucursal != "Todas":
         datos = datos[datos['Sucursal'] == sucursal]
-        st.title(f"📊 Datos de {sucursal}")
+        st.title(f"Datos de {sucursal}")
     else:
-        st.title("📊 Datos de Todas las Sucursales")
+        st.title("Datos de Todas las Sucursales")
     productos = datos['Producto'].unique()
     for producto in productos:
         with st.container( border= True):
-            st.subheader(f"📦 Producto: {producto}")
+            st.subheader(f"Producto: {producto}")
             
             data_producto = datos[datos['Producto'] == producto]
             data_producto['Precio_promedio'] = data_producto['Ingreso_total'] / data_producto['Unidades_vendidas']
@@ -64,12 +61,15 @@ if archivo is not None:
             unidades_total = data_producto['Unidades_vendidas'].sum()
             variacion_unidades = data_producto.groupby('Año')['Unidades_vendidas'].sum().pct_change().mean() * 100
             
+            col1, col2 = st.columns([0.25, 0.75])
             
-            col1, col2, col3 = st.columns(3)
-
-            col1.metric(label="💲 Precio Promedio", value=f"${precio_promedio:,.0f}".replace(",", "."), delta=f"{variacion_precio:.2f}%")
-            col2.metric(label="📈 Margen Promedio", value=f"{margen_promedio:.0f}%".replace(",", "."), delta=f"{variacion_margen:.2f}%")
-            col3.metric(label="📊 Unidades Vendidas", value=f"{unidades_total:,.0f}".replace(",", "."), delta=f"{variacion_unidades:.2f}%")
-
-            fig = generar_grafico(data_producto, producto)
-            st.pyplot(fig)
+            with col1:
+                st.metric(label="Precio Promedio", value=f"${precio_promedio:,.0f}".replace(",", "."), delta=f"{variacion_precio:.2f}%")
+                st.metric(label="Margen Promedio", value=f"{margen_promedio:.0f}%".replace(",", "."), delta=f"{variacion_margen:.2f}%")
+                st.metric(label="Unidades Vendidas", value=f"{unidades_total:,.0f}".replace(",", "."), delta=f"{variacion_unidades:.2f}%")
+            
+            with col2:
+                fig = generar_grafico(data_producto, producto)
+                st.pyplot(fig)
+else:
+    mostrar_datos_usuario()
