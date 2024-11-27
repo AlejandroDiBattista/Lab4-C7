@@ -15,7 +15,7 @@ def mostrar_grafico_producto(df, producto, sucursal):
     data = ventas_producto[ventas_producto['Producto'] == producto]
     data['Periodo'] = data['Año'].astype(str) + '-' + data['Mes'].astype(str)
     fig, ax = plt.subplots(figsize=(10, 6.3)) 
-    ax.plot(data['Periodo'], data['Unidades_vendidas'], label=producto, linestyle='-', color='blue')
+    ax.plot(data['Periodo'], data['Unidades_vendidas'], label=producto)
     ax.set_title(f'Evolución ventas mensual', fontsize=14)
     ax.set_xlabel('Año-Mes', fontsize=12)
     ax.set_ylabel('Unidades Vendidas', fontsize=10)
@@ -30,7 +30,7 @@ def mostrar_grafico_producto(df, producto, sucursal):
     coef = np.polyfit(x, y, 1)
     poly = np.poly1d(coef)
     tendencia = poly(x)
-    ax.plot(data['Periodo'], tendencia, label='Tendencia', color='r', linestyle='--', linewidth=2)
+    ax.plot(data['Periodo'], tendencia, label='Tendencia', color='r', linestyle='--')
     ax.legend(title="Producto")
     ax.set_ylim(0,None)
     ax.grid(True)
