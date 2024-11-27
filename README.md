@@ -1,4 +1,4 @@
-## Comisión 2 (37)
+## Comisión 7 [33]
 
 
 #### Resultados de la evaluación del segundo parcial.
@@ -8,56 +8,50 @@
 > La recuperación debe ser *realizada y subida adecuadamente* hasta el **jueves al mediodía**.
             
 
-### Aprobados (26) 
-* `01` | **58764**  | Acuña, Ana Sofía
-* `02` | **59277**  | Aguirre, Emanuel
-* `03` | **58829**  | Albornoz Silva, Alejo Miguel
-* `06` | **58828**  | Alvarez, Nicolás Nahuel
-* `07` | **59176**  | Argañaraz, Facundo Nahuel
-* `08` | **58909**  | Argañaraz, Leonardo Ramiro
-* `09` | **50665**  | Arias Olaiz, Marcos Ignacio
-* `10` | **59078**  | Bazan, Bruno Gabriel
-* `14` | **59234**  | Chocobar, Matías Sebastián
-* `13` | **58865**  | Chávez, Pedro Ismael
-* `15` | **59268**  | Cordoba, Pedro Josue
-* `16` | **58732**  | Coronel, Sergio Antonio
-* `17` | **59423**  | Esper, Rodrigo Fernando
-* `18` | **55530**  | Fernández, Agustín Alejo
-* `19` | **59130**  | Gatti, Luciano Alberto
-* `23` | **58782**  | Goyechea, María de los Angeles
-* `25` | **58777**  | Jassán, Alan
-* `26` | **55751**  | Jérez, Francisco David
-* `27` | **58943**  | Maza, Santiago Martín
-* `28` | **55650**  | Moyano, Iván Eduardo
-* `29` | **58907**  | Nuñez, Walter Exequiel
-* `31` | **58808**  | Rodríguez, Nahuel Federico
-* `35` | **59450**  | Skibski, Ignacio
-* `33` | **58942**  | Sánchez Ortiz, Hernán
-* `36` | **59451**  | Urueña, Karen Florencia
-* `37` | **59160**  | Veneziano, Juan Ignacio
+### Aprobados (12) 
+* `01` | **55936**  | Arcos, Lucas Isaias
+* `02` | **55547**  | Cabrera, Pablo Daniel
+* `04` | **59312**  | Cancino, Ignacio Matías
+* `09` | **59251**  | Mamani, Daniel Fernando
+* `32` | **59250**  | Martinez, Ignacio
+* `11` | **59043**  | Medina, Elias Manuel
+* `14` | **55606**  | Meza, Julieta Noemí
+* `16` | **58826**  | Moyano, Luján
+* `18` | **59358**  | Nieva Pastoriza, Gonzalo
+* `25` | **58934**  | Quiroga Gil, Juan Ignacio
+* `26` | **58935**  | Quiroga Gil, Santiago José
+* `31` | **59047**  | Torres, Francisco Gabriel
 
-### Recuperar (4)
+### Recuperar (15)
 
 ##### Debe corregir los resultados 
-* `04` | **58952**  | Almiron, Maicol Leonel
+* `07` | **58700**  | Heredia, Solana
+* `12` | **59194**  | Medina, María Josefina
+* `19` | **59162**  | Nuñez Orqueta, Luis Alberto
+* `23` | **58699**  | Perea Fernández, Facundo
 
 ##### Debe corregir la presentacion 
-* `12` | **47121**  | Caram, Jesús Nicolás
-* `32` | **47417**  | Rosales, José Ignacio
+* `03` | **58769**  | Callejas, Máximo Facundo
+* `05` | **59348**  | Conort, Ignacio
+* `08` | **59174**  | Maceda, Tiziano Gabriel
+* `15` | **59134**  | Molina, Tomás Agustín
+* `33` | **58728**  | Montivero Lizondo, Martino
+* `22` | **58794**  | Patti, Mauro Luciano
+* `27` | **58912**  | Quiroga, Leandro Iván
+* `28` | **59072**  | Rodríguez, Ana Paula
 
 ##### Debe corregir resultados y presentación 
-* `21` | **55533**  | González, Luciano Leandro
+* `06` | **59158**  | Corral, Luciano
+* `10` | **58702**  | Manzano, Gonzalo Javier
+* `17` | **59044**  | Naranjo Sosa, Lucas
 
-#### Desaprobados <small>(3)</small>
-* `05` | **58731**  | Alvarez, Nicolás
-* `24` | **55940**  | Gramajo, Elba Virginia Maria
-* `34` | **59424**  | Selis, Daiana Betsabé
-
-#### No presentaron <small>(4)</small>
-* `11` | **49185**  | Bett, Matías Alejandro
-* `20` | **58832**  | González, Adrián Leonel
-* `22` | **55906**  | González, Ramiro Exequiel
-* `30` | **59555**  | Reynoso, Lucas Facundo
+#### No presentaron <small>(6)</small>
+* `13` | **55939**  | Mena, Iván Leandro
+* `20` | **59049**  | Ortiz, Matías Nicolás
+* `21` | **59490**  | Parra, Ana Belén
+* `24` | **55489**  | Pérez, Sofía Micaela
+* `30` | **57586**  | Roldán, Julieta del Rocío
+* `29` | **55776**  | Roldán Vicecci, Camila Lucía
 
 ## ¿Cómo recuperar el trabajo?
 **Para promocionar la materia, tanto los resultados como la presentación deben estar correctos.**
