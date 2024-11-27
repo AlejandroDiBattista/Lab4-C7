@@ -12,7 +12,7 @@ def mostrar_informacion_alumno():
         st.markdown('**Nombre:** Facundo Perea Fernandez')
         st.markdown('**Comisión:** C7')
 
-st.set_page_config(page_title="Análisis de Ventas", layout="wide")
+st.set_page_config(page_title="Análisis de Ventas")
 
 
 if "datos_cargados" not in st.session_state:
