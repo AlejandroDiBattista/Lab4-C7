@@ -7,41 +7,43 @@ import matplotlib.pyplot as plt
 # url = 'https://tp8-58728.streamlit.app/'
 
 def mostrar_informacion_alumno():
-    with st.container():
+    with st.container(border=True):
         st.markdown('**Legajo:** 58728')
         st.markdown('**Nombre:** Martino Montivero Lizondo')
         st.markdown('**Comisión:** C7')
 
-mostrar_informacion_alumno()
 
-if 'paraelboton' not in st.session_state:
-    st.session_state.paraelboton = False
 
-st.title(" Informe de Ventas")
+
+
+
 
 
 datos = st.sidebar.file_uploader("Subir informe", type=["csv"])
-
+if datos is None:
+    st.header ("Por favor, sube un archivo csv desde la barra lateral.")
+    mostrar_informacion_alumno()
+    
 
 if datos is not None:
     df = pd.read_csv(datos)
     
-    if st.button("Mostrar informe"):
-        st.session_state.paraelboton = not st.session_state.paraelboton
-    
-    if st.session_state.paraelboton:
-        st.write(df)
 
     opciones = df["Sucursal"].unique()
     opcion_todas = "Todas"
-    sucursal_elegida = st.sidebar.selectbox("Seleccione una sucursal", options=[opcion_todas] + list(opciones))
+    sucursal_elegida = st.sidebar.selectbox("Seleccionar sucursal", options=[opcion_todas] + list(opciones))
 
     
     if sucursal_elegida != opcion_todas:
         df = df[df["Sucursal"] == sucursal_elegida]
+        st.title(f"Datos de  {sucursal_elegida}")
     productos = df["Producto"].unique()
+    
+    if sucursal_elegida == opcion_todas:
+        st.title("Datos de todas las sucursales")
+    
 
-    st.header(f"Analisis de ventas para la sucursal: {sucursal_elegida}")
+    
 
     
     
@@ -116,20 +118,22 @@ if datos is not None:
         return fig
 
 
-    
+   
     for producto in productos:
-        st.subheader(producto)
-        st.divider()
-        
-        indicadores = calcular_metricas(df, producto)
-        
-        # Mostrar métricas
-        col1, col2, col3 = st.columns(3)
-        col1.metric("Precio Promedio", f"${indicadores['preciopromedio']:.2f}", f"{indicadores['cambio_precio']:+.2f}%")
-        col2.metric("Margen Promedio", f"{indicadores['margenpromedio']:.2f}%", f"{indicadores['cambio_margen']:+.2f}%")
-        col3.metric("Unidades Vendidas", f"{int(indicadores['totalunidades']):,}", f"{indicadores['cambio_ventas']:+.2f}%")
-        
-        # Mostrar gráfico
-        fig = grafico(df[df["Producto"] == producto], producto)
-        st.pyplot(fig)
+        with st.container( border=True):
+            st.subheader(producto)
 
+            indicadores = calcular_metricas(df, producto)
+
+            
+            col_izq, col_der = st.columns([1, 3])
+
+          
+            with col_izq:
+                st.metric("Precio Promedio", f"${indicadores['preciopromedio']:.2f}", f"{indicadores['cambio_precio']:+.2f}%")
+                st.metric("Margen Promedio", f"{indicadores['margenpromedio']:.2f}%", f"{indicadores['cambio_margen']:+.2f}%")
+                st.metric("Unidades Vendidas", f"{int(indicadores['totalunidades']):,}", f"{indicadores['cambio_ventas']:+.2f}%")
+
+            with col_der:
+                fig = grafico(df[df["Producto"] == producto], producto)
+                st.pyplot(fig)
