@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 ## ATENCION: Debe colocar la direccion en la que ha sido publicada la aplicacion en la siguiente linea\
-# url = ''
+# url = 'https://tp8-59134-c7.streamlit.app/'
 
 st.set_page_config(
     page_title="Análisis de Ventas",                
