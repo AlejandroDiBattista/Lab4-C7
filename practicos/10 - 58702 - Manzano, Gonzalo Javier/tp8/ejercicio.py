@@ -2,116 +2,111 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy import stats
 
 # ATENCION: Debe colocar la direccion en la que ha sido publicada la aplicacion en la siguiente linea\
 # link del deploy de el Trabajo Practico Numero 8: 
 # URL = 'https://ejeciciolabgonzalomanzano.streamlit.app/'
 
-# Función para mostrar la información del alumno
-def mostrar_informacion_alumno():
-    with st.container():
-        st.markdown('**Legajo:** 58.702')
-        st.markdown('**Nombre:** Gonzalo Manzano')
-        st.markdown('**Comisión:** C7')
+# Función para generar gráficos de evolución de ventas
+def generar_grafico(datos_producto, nombre_producto):
+    ventas_mensuales = datos_producto.groupby(['Año', 'Mes'])['Unidades_vendidas'].sum().reset_index()
+    figura, eje = plt.subplots(figsize=(10, 6))
+    eje.plot(ventas_mensuales.index, ventas_mensuales['Unidades_vendidas'], label=nombre_producto)
 
-# Función para cargar y mostrar el archivo CSV
-def cargar_archivo():
-    archivo = st.sidebar.file_uploader("Subir archivo CSV", type="csv")
-    if archivo:
-        datos = pd.read_csv(archivo)
-        return datos
-    return None
+    # Línea de tendencia
+    x_vals = np.arange(len(ventas_mensuales))
+    y_vals = ventas_mensuales['Unidades_vendidas']
+    coeficientes = np.polyfit(x_vals, y_vals, 1)
+    linea_tendencia = np.poly1d(coeficientes)
+    eje.plot(x_vals, linea_tendencia(x_vals), linestyle='--', color='red', label='Tendencia')
 
-# Función para calcular métricas y gráficos
-def mostrar_informacion(datos, sucursal):
-    if sucursal != "Todas":
-        datos = datos[datos["Sucursal"] == sucursal]
+    eje.set_title('Evolución de Ventas')
+    eje.set_xlabel('Meses')
+    eje.set_ylabel('Unidades Vendidas')
+    eje.set_ylim(0)
+    eje.legend(title="Producto")
+    eje.grid(True)
 
-    productos = datos["Producto"].unique()
-    for producto in productos:
-        datos_producto = datos[datos["Producto"] == producto]
-        
-        # Validaciones de datos
-        if datos_producto["Ingreso_total"].isnull().any():
-            st.error(f"El producto '{producto}' tiene valores nulos en la columna 'Ingreso_total'.")
-            continue
-        if datos_producto["Unidades_vendidas"].isnull().any():
-            st.error(f"El producto '{producto}' tiene valores nulos en la columna 'Unidades_vendidas'.")
-            continue
-        if (datos_producto["Ingreso_total"] < 0).any():
-            st.error(f"El producto '{producto}' tiene valores negativos en 'Ingreso_total'.")
-            continue
-        if (datos_producto["Unidades_vendidas"] <= 0).any():
-            st.error(f"El producto '{producto}' tiene valores no positivos en 'Unidades_vendidas'.")
-            continue
-        
-        # Cálculo de métricas
-        unidades_vendidas = datos_producto["Unidades_vendidas"].sum()
-        ingreso_total = datos_producto["Ingreso_total"].sum()
-        costo_total = datos_producto["Costo_total"].sum()
-        
-        precio_promedio = ingreso_total / unidades_vendidas
-        margen_promedio = (ingreso_total - costo_total) / ingreso_total * 100
-        
-        # Cálculo de delta para Precio Promedio (comparado con el promedio global)
-        precio_promedio_global = datos["Ingreso_total"].sum() / datos["Unidades_vendidas"].sum()
-        delta_precio = precio_promedio - precio_promedio_global
-        precio_promedio_2024 = datos_producto[datos_producto["Año"] == 2024]["Ingreso_total"].sum() / datos_producto[datos_producto["Año"] == 2024]["Unidades_vendidas"].sum()
-        precio_promedio_2023 = datos_producto[datos_producto["Año"] == 2023]["Ingreso_total"].sum() / datos_producto[datos_producto["Año"] == 2023]["Unidades_vendidas"].sum()
-        margen_promedio_2024 = ((datos_producto[datos_producto["Año"] == 2024]["Ingreso_total"].sum() - datos_producto[datos_producto["Año"] == 2024]["Costo_total"].sum()) / datos_producto[datos_producto["Año"] == 2024]["Ingreso_total"].sum()) * 100
-        margen_promedio_2023 = ((datos_producto[datos_producto["Año"] == 2023]["Ingreso_total"].sum() - datos_producto[datos_producto["Año"] == 2023]["Costo_total"].sum()) / datos_producto[datos_producto["Año"] == 2023]["Ingreso_total"].sum()) * 100
-        unidades_2024 = datos_producto[datos_producto["Año"] == 2024]["Unidades_vendidas"].sum()
-        unidades_2023 = datos_producto[datos_producto["Año"] == 2023]["Unidades_vendidas"].sum()
+    etiquetas = [f"{row.Año}" if row.Mes == 1 else "" for row in ventas_mensuales.itertuples()]
+    eje.set_xticks(range(len(ventas_mensuales)))
+    eje.set_xticklabels(etiquetas)
 
-        # Mostrar métricas
-        st.header(producto)
-        st.metric("Precio Promedio", f"${precio_promedio:,.2f}", delta=f"{((precio_promedio_2024 / precio_promedio_2023) - 1) * 100:.2f}%")
-        st.metric("Margen Promedio", f"{margen_promedio:.2f}%", delta=f"{((margen_promedio_2024 / margen_promedio_2023) - 1) * 100:.2f}%")
-        st.metric("Unidades Vendidas", f"{unidades_vendidas:,}", delta=f"{((unidades_2024 / unidades_2023) - 1) * 100:.2f}%")
+    return figura
 
+# Función para mostrar datos de Gonzalo Manzano
+def mostrar_datos_usuario():
+    st.markdown("""
+    ### Información del Usuario
+    **Nombre:** Gonzalo Manzano  
+    **Legajo:** 58702  
+    **Comisión:** 7
+    """)
 
-        # Preparar datos para la columna Fecha
-        datos_producto['Año'] = datos_producto['Año'].astype(int)
-        datos_producto['Mes'] = datos_producto['Mes'].astype(int)
-        datos_producto['Fecha'] = pd.to_datetime(
-            datos_producto['Año'].astype(str) + '-' + datos_producto['Mes'].astype(str) + '-01'
-        )
-        
-        # Ordenar por Fecha
-        datos_producto.sort_values('Fecha', inplace=True)
+# Configuración de la barra lateral
+st.sidebar.header("Carga de Datos")
+archivo_subido = st.sidebar.file_uploader("Cargar archivo CSV", type=["csv"])
 
-        # Gráfico de evolución de ventas
-        fig, ax = plt.subplots()
-        ax.plot(datos_producto["Fecha"], datos_producto["Unidades_vendidas"], label=producto)
-        
-        # Agregar línea de tendencia
-        x = np.arange(len(datos_producto))
-        y = datos_producto["Unidades_vendidas"].values
-        slope, intercept, _, _, _ = stats.linregress(x, y)
-        tendencia = slope * x + intercept
-        ax.plot(datos_producto["Fecha"], tendencia, label="Tendencia", color="red")
-        
-        ax.set_title("Evolución de Ventas Mensual")
-        ax.set_xlabel("Año-Mes")
-        ax.set_ylabel("Unidades vendidas")
-        ax.legend()
-        st.pyplot(fig)
+# Función auxiliar para aplicar colores
+def formatear_delta(valor):
+    color = "red" if valor < 0 else "green"
+    return f'<span style="color:{color};">{valor:.2f}%</span>'
 
-# Interfaz principal de la aplicación
-def main():
-    st.sidebar.title("Cargar archivo de datos")
-    mostrar_informacion_alumno()
+# Procesar datos si se sube un archivo
+if archivo_subido:
+    datos = pd.read_csv(archivo_subido)
 
-    datos = cargar_archivo()
-    if datos is not None:
-        sucursales = ["Todas"] + datos["Sucursal"].unique().tolist()
-        sucursal_seleccionada = st.sidebar.selectbox("Seleccionar Sucursal", sucursales)
-        
-        st.header(f"Datos de {'Todas las Sucursales' if sucursal_seleccionada == 'Todas' else sucursal_seleccionada}")
-        mostrar_informacion(datos, sucursal_seleccionada)
+    # Selección de sucursales
+    lista_sucursales = ["Todas"] + datos['Sucursal'].unique().tolist()
+    sucursal_actual = st.sidebar.selectbox("Filtrar por Sucursal", lista_sucursales)
+
+    if sucursal_actual != "Todas":
+        datos = datos[datos['Sucursal'] == sucursal_actual]
+        st.title(f"Análisis para {sucursal_actual}")
     else:
-        st.write("Por favor, sube un archivo CSV desde la barra lateral.")
+        st.title("Análisis de Todas las Sucursales")
 
-if __name__ == "__main__":
-    main()
+    # Análisis por producto
+    for producto in datos['Producto'].unique():
+        datos_producto = datos[datos['Producto'] == producto]
+        st.subheader(f"Producto: {producto}")
+
+        # Cálculo de métricas
+        datos_producto['Precio_promedio'] = datos_producto['Ingreso_total'] / datos_producto['Unidades_vendidas']
+        precio_promedio = datos_producto['Precio_promedio'].mean()
+        precio_anual = datos_producto.groupby('Año')['Precio_promedio'].mean()
+        variacion_precio = (precio_anual.diff() / precio_anual.shift(1)).iloc[-1] * 100
+
+        datos_producto['Ganancia'] = datos_producto['Ingreso_total'] - datos_producto['Costo_total']
+        datos_producto['Margen'] = (datos_producto['Ganancia'] / datos_producto['Ingreso_total']) * 100
+        margen_promedio = datos_producto['Margen'].mean()
+        margen_anual = datos_producto.groupby('Año')['Margen'].mean()
+        variacion_margen = (margen_anual.diff() / margen_anual.shift(1)).iloc[-1] * 100
+
+        unidades_vendidas = datos_producto['Unidades_vendidas'].sum()
+        unidades_anual = datos_producto.groupby('Año')['Unidades_vendidas'].sum()
+        variacion_unidades = (unidades_anual.diff() / unidades_anual.shift(1)).iloc[-1] * 100
+
+        # Mostrar métricas y gráfico en columnas
+        col1, col2 = st.columns([1, 2])
+
+        with col1:
+            st.markdown(
+                f"**Precio Promedio:** ${precio_promedio:,.2f} ({formatear_delta(variacion_precio)})",
+                unsafe_allow_html=True
+            )
+            st.markdown(
+                f"**Margen Promedio:** {margen_promedio:.2f}% ({formatear_delta(variacion_margen)})",
+                unsafe_allow_html=True
+            )
+            st.markdown(
+                f"**Unidades Vendidas:** {unidades_vendidas:,} ({formatear_delta(variacion_unidades)})",
+                unsafe_allow_html=True
+            )
+
+        with col2:
+            figura = generar_grafico(datos_producto, producto)
+            st.pyplot(figura)
+
+else:
+    st.warning("Por favor, sube un archivo CSV para comenzar el análisis.")
+    mostrar_datos_usuario()
