@@ -71,12 +71,13 @@ else:
                 
                 with st.container():
                     # Métricas y gráficos
+                    st.subheader(producto)
                     columna_metrica, columna_grafico = st.columns([1, 3])
                     
                     # Métricas
                     with columna_metrica:
-                        st.metric("💵 Precio Promedio", f"${precio_promedio:,.2f}")
-                        st.metric("📈 Margen Promedio", f"{margen_promedio * 100:.2f}%")
+                        st.metric("💵 Precio Promedio", f"${precio_promedio:,.0f}")
+                        st.metric("📈 Margen Promedio", f"{margen_promedio * 100:.0f}%")
                         st.metric("📦 Unidades Vendidas", f"{int(unidades_vendidas):,}")
                     
                     # Gráfico de evolución
