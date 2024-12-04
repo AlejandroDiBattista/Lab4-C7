@@ -14,6 +14,7 @@ Por último, las personas que están _libres_ son aquellas que han dejado de cur
   2. 55547  Cabrera, Pablo Daniel
   4. 59312  Cancino, Ignacio Matías
   5. 59348  Conort, Ignacio
+  6. 59158  Corral, Luciano
   7. 58700  Heredia, Solana
   8. 59174  Maceda, Tiziano Gabriel
   9. 59251  Mamani, Daniel Fernando
@@ -25,6 +26,7 @@ Por último, las personas que están _libres_ son aquellas que han dejado de cur
  16. 58826  Moyano, Luján
  17. 59044  Naranjo Sosa, Lucas
  18. 59358  Nieva Pastoriza, Gonzalo
+ 19. 59162  Nuñez Orqueta, Luis Alberto
  22. 58794  Patti, Mauro Luciano
  23. 58699  Perea Fernández, Facundo
  25. 58934  Quiroga Gil, Juan Ignacio
@@ -41,8 +43,6 @@ Por último, las personas que están _libres_ son aquellas que han dejado de cur
 ```
 #### Regular
 ```
-  6. 59158  Corral, Luciano
- 19. 59162  Nuñez Orqueta, Luis Alberto
  24. 55489  Pérez, Sofía Micaela
 ```
 #### Libre
