@@ -8,7 +8,7 @@ Las personas que están en condición de _regular_ deberán presentarse a rendir
 
 Por último, las personas que están _libres_ son aquellas que han dejado de cursar.
 
-#### Promocionado
+#### Promocionado (24)
 ```
   1. 55936  Arcos, Lucas Isaias
   2. 55547  Cabrera, Pablo Daniel
@@ -35,17 +35,17 @@ Por último, las personas que están _libres_ son aquellas que han dejado de cur
  31. 59047  Torres, Francisco Gabriel
  33. 58728  Montivero Lizondo, Martino
 ```
-#### Promoción en suspenso
+#### Promoción en suspenso (3)
 ```
   3. 58769  Callejas, Máximo Facundo
  27. 58912  Quiroga, Leandro Iván
  32. 59250  Martinez, Ignacio
 ```
-#### Regular
+#### Regular (1)
 ```
  24. 55489  Pérez, Sofía Micaela
 ```
-#### Libre
+#### Libre (5)
 ```
  13. 55939  Mena, Iván Leandro
  20. 59049  Ortiz, Matías Nicolás
